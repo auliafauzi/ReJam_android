@@ -6,6 +6,10 @@ const baseURL = import.meta.env.VITE_API_BASE_URL || ''
 
 const http = axios.create({
   baseURL,
+  headers: {
+    'ngrok-skip-browser-warning': 'true', // 👈 KUNCI UTAMA UNTUK NGROK
+    // 'Content-Type': 'application/json'
+  }
 })
 
 // Attach the auth token (DRF TokenAuthentication) to every request if present.
@@ -13,6 +17,7 @@ http.interceptors.request.use((config) => {
   const token = localStorage.getItem('bandjam_token')
   if (token) {
     config.headers.Authorization = `Token ${token}`
+    // config.headers.Authorization = `Token 3FAIJ9WuDuIlvEHWWIQhHMiRvT5_2ArsTUy6PJCWMGsWihBSH` //authtoken ngrok
   }
   return config
 })

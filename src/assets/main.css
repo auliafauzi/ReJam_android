@@ -445,21 +445,17 @@ select option { background: #2a2220; }
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
   transition: all 0.2s ease; /* Opsional: agar perubahan ukuran terasa halus */
 }
-.guitar-pick.metal-effect {
-  width: 35px;  /* Ukuran yang lebih besar agar efek metal terlihat jelas */
-  height: 35px;
-  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.2)); /* Bayangan luar yang sedikit lebih kuat */
-}
-.guitar-pick.clean-gradient {
-  /* Menggunakan ukuran yang sudah Anda setujui sebelumnya */
-  width: 36px;
-  height: 40px; 
-  
-  /* Memberikan bayangan luar (drop-shadow) yang lembut di atas warna coral */
+.guitar-pick.reference-style.clean-gradient {
+  width: 40px;
+  height: 40px;
   filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.12));
-  
-  /* Opsional: Efek animasi halus saat logo disentuh/di-hover */
   transition: transform 0.2s ease, filter 0.2s ease;
+}
+.guitar-pick.reference-style {
+  width: 42px;
+  height: 42px;
+  /* Bayangan drop-shadow tipis di luar mengikuti kelembutan gambar asli */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.08)); 
 }
 
 /* Membuat logo sedikit terangkat saat di-hover (bagus untuk web) */

@@ -4,11 +4,13 @@
     <div class="rel">
       <div class="hero">
         <div class="logo-mark">
-  <svg class="guitar-pick clean-gradient" viewBox="0 0 100 92" xmlns="http://www.w3.org/2000/svg">
-    
+  <svg class="guitar-pick reference-style clean-gradient" viewBox="0 0 100 96" xmlns="http://www.w3.org/2000/svg">
     <defs>
-      <linearGradient id="simpleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color: #FFFFFF; stop-opacity: 1" />    <stop offset="35%" style="stop-color: #ECECEC; stop-opacity: 1" />   <stop offset="100%" style="stop-color: #A2A2A2; stop-opacity: 1" />  </linearGradient>
+      <linearGradient id="heavyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" style="stop-color: #FFFFFF; stop-opacity: 1" />
+        <stop offset="35%" style="stop-color: #ECECEC; stop-opacity: 1" />
+        <stop offset="100%" style="stop-color: #A2A2A2; stop-opacity: 1" />
+      </linearGradient>
 
       <filter id="softInnershadow" x="-20%" y="-20%" width="140%" height="140%">
         <feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/>
@@ -22,15 +24,14 @@
       </filter>
     </defs>
     
-    <path d="M 43,94 
-             C 47,98 53,98 57,94 
-             Q 85,54 93,25 
-             C 96,20 93,12 86,12 
-             Q 50,4 14,12 
-             C 7,12 4,20 7,25 
-             Q 15,54 43,94 
+    <path d="M 46.5,96 
+             C 48.5,98 51.5,98 53.5,96 
+             C 69,76 88,52 88,36
+             C 88,21 72,15 50,15
+             C 28,15 12,21 12,36
+             C 12,52 31,76 46.5,96 
              Z" 
-          fill="url(#simpleGrad)" 
+          fill="url(#heavyGrad)" 
           filter="url(#softInnershadow)" />
   </svg>
 </div>
@@ -42,11 +43,11 @@
 
         <div v-if="error" class="form-error">{{ error }}</div>
 
-        <label class="field-label" style="margin-top:0;">Nomor telepon / email / username</label>
+        <label class="field-label" style="margin-top:0;">Nomor telepon / email</label>
         <input
           v-model="username"
           type="text"
-          placeholder="08xx, kamu@email.com, atau username"
+          placeholder="08xx, kamu@email.com,"
           autocomplete="username"
         >
 
