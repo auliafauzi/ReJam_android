@@ -75,3 +75,4 @@ src/
   (`POST /api/bands/`, `POST /api/bands/:id/invite/`) but have no screens in
   the original mockup — not yet built into the frontend. Add views for these
   if band creation / matchmaking flows are needed next.
+- for every changes, remember to `npm run build` then `npx cap copy` before rebuild the apk
