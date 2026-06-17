@@ -31,6 +31,7 @@
         <option value="">— Pilih kecamatan —</option>
         <option v-for="k in kecamatans" :key="k" :value="k">{{ k }}</option>
       </select>
+    </div>
 
     <div class="btn-row">
       <button class="btn-ghost" @click="$router.back()"><i class="ti ti-arrow-left"></i>Kembali</button>
