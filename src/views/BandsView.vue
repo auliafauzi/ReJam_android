@@ -25,7 +25,7 @@
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div>
             <div class="band-card-title">{{ band.nama }}</div>
-            <div class="band-card-sub">{{ band.genre }} · {{ band.kota }}<span v-if="band.kecamatan">, {{ band.kecamatan }}</span></div>
+            <div class="band-card-sub">{{ Array.isArray(band.genre) ? band.genre.join(', ') : band.genre }} · {{ band.kota }}</div>
           </div>
           <span v-if="band.unread_count > 0" class="badge">{{ band.unread_count }}</span>
         </div>
