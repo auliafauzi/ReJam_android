@@ -33,7 +33,7 @@ export const authApi = {
     return http.post('/api/auth/onboarding/step4/', payload)
   },
   onboardingStep5(payload) {
-    // { kota, kecamatan, direct_access, kota2?, kecamatan2?, direct_access2? }
+    // { kota, kecamatan, kota2?, kecamatan2? }
     return http.post('/api/auth/onboarding/step5/', payload)
   },
   onboardingStep6(payload) {

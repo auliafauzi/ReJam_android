@@ -19,11 +19,6 @@
       <select v-model="form.kecamatan">
         <option v-for="k in kecamatans" :key="k" :value="k">{{ k }}</option>
       </select>
-      <label class="field-label">Akses langsung</label>
-      <select v-model="form.direct_access">
-        <option :value="true">Akomodir</option>
-        <option :value="false">Tidak akomodir</option>
-      </select>
 
       <div class="section-tag" style="margin-top:20px;">Lokasi 2 <span style="color:#555; font-weight:400;">(opsional)</span></div>
       <label class="field-label" style="margin-top:8px;">Kota</label>
@@ -36,12 +31,6 @@
         <option value="">— Pilih kecamatan —</option>
         <option v-for="k in kecamatans" :key="k" :value="k">{{ k }}</option>
       </select>
-      <label class="field-label">Akses langsung</label>
-      <select v-model="form.direct_access2" :disabled="!form.kota2">
-        <option :value="true">Akomodir</option>
-        <option :value="false">Tidak akomodir</option>
-      </select>
-    </div>
 
     <div class="btn-row">
       <button class="btn-ghost" @click="$router.back()"><i class="ti ti-arrow-left"></i>Kembali</button>
@@ -66,10 +55,8 @@ const kecamatans = ['Kebayoran Baru', 'Senopati', 'Menteng', 'Cikini', 'Sudirman
 const form = reactive({
   kota: 'Jakarta',
   kecamatan: 'Kebayoran Baru',
-  direct_access: true,
   kota2: '',
   kecamatan2: '',
-  direct_access2: true,
 })
 
 const loading = ref(false)
@@ -85,12 +72,10 @@ async function handleNext() {
   const payload = {
     kota: form.kota,
     kecamatan: form.kecamatan,
-    direct_access: form.direct_access,
   }
   if (form.kota2) {
     payload.kota2 = form.kota2
     payload.kecamatan2 = form.kecamatan2
-    payload.direct_access2 = form.direct_access2
   }
 
   loading.value = true
