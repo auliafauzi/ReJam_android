@@ -34,6 +34,9 @@ const routes = [
   { path: '/chats/:bandId', name: 'chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/support', name: 'support', component: SupportView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true, requiresOnboarding: true } },
+
+  //Chat view for superadmin
+  { path: '/chats/:bandId/:convId', name: 'admin-chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
 ]
 
 const router = createRouter({

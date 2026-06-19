@@ -10,4 +10,7 @@ export const messagingApi = {
   remove(conversationId, messageId) {
     return http.delete(`/api/conversations/${conversationId}/${messageId}/`)
   },
+  updateStatus(conversationId, status) {
+    return http.patch(`/api/conversations/${conversationId}/status/`, { status })
+  },
 }
