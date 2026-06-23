@@ -20,7 +20,7 @@
         <option v-for="k in kecamatans" :key="k" :value="k">{{ k }}</option>
       </select>
 
-      <div class="section-tag" style="margin-top:20px;">Lokasi 2 <span style="color:#555; font-weight:400;">(opsional)</span></div>
+      <div class="section-tag" style="margin-top:20px;">Lokasi 2 <span style="color:#555; font-weight:400;">(opsional, gunakan untuk lokasi biasa kamu berkegiatan/bekerja)</span></div>
       <label class="field-label" style="margin-top:8px;">Kota</label>
       <select v-model="form.kota2">
         <option value="">— Pilih kota —</option>
