@@ -12,7 +12,7 @@
     </div>
 
     <div class="btn-solo">
-      <button class="btn-primary" @click="$router.push('/bands')">Mulai Jamming</button>
+      <button class="btn-primary" @click="$router.push('/chats')">Mulai Jamming</button>
     </div>
   </div>
 </template>

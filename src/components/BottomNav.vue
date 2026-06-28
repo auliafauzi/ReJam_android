@@ -1,8 +1,11 @@
 <template>
   <nav class="nav-bar"> 
     <router-link to="/chats" class="nav-item" :class="{ active: isActive('chats') }">
-      <i class="ti ti-message-circle"></i><span>Chats</span>
-      <span v-if="unread > 0" class="badge" style="margin-top:-2px;">{{ unread }}</span>
+      <div style="position:relative; display:inline-flex;">
+        <i class="ti ti-message-circle"></i>
+        <span v-if="unread > 0" class="badge" style="position:absolute; top:-6px; right:-8px; min-width:16px; height:16px; font-size:9px; padding: 0 4px;">{{ unread }}</span>
+      </div>
+      <span>Chats</span>
     </router-link>
     <router-link to="/bands" class="nav-item" :class="{ active: isActive('bands') }">
       <GuitarPickIcon :size="20" />

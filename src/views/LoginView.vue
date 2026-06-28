@@ -103,7 +103,7 @@ async function handleLogin() {
   try {
     const user = await auth.login({ identifier: identifier.value, password: password.value })
     if (user.onboarding_complete) {
-      router.push('/bands')
+      router.push('/chats')
     } else {
       router.push('/onboarding/instruments')
     }

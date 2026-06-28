@@ -55,7 +55,7 @@ router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
 
   if (to.meta.guestOnly && auth.isAuthenticated) {
-    return next(auth.onboardingComplete ? '/bands' : '/onboarding/instruments')
+    return next(auth.onboardingComplete ? '/chats' : '/onboarding/instruments')
   }
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
 
   // If onboarding already done, don't let the user wander back into the wizard
   if (to.path.startsWith('/onboarding') && to.name !== 'onboarding-signup' && auth.onboardingComplete) {
-    return next('/bands')
+    return next('/chats')
   }
 
   next()
