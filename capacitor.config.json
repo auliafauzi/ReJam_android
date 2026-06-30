@@ -1,6 +1,6 @@
 {
-  "appId": "com.bandjam.app",
-  "appName": "BandJam",
+  "appId": "com.rejam.app",
+  "appName": "Re:Jam",
   "webDir": "dist",
   "server": {
     "androidScheme": "https"

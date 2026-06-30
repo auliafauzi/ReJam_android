@@ -6,7 +6,7 @@
         <i class="ti ti-arrow-left"></i>
       </button>
       <div class="mini-logo"><i class="ti ti-music"></i></div>
-      <span class="mini-brand">BandJam Support</span>
+      <span class="mini-brand">Re:Jam Support</span>
     </div>
 
     <div class="scroll-body" ref="scrollEl">
@@ -27,7 +27,7 @@
         >
           <div class="msg-bubble">
             <div v-if="!msg.from_user" style="font-size:10px; color: var(--text-dim); margin-bottom:3px;">
-              BandJam Team
+              ReJam Team
             </div>
             {{ msg.text }}
             <div class="msg-time">{{ formatTime(msg.created_at) }}</div>
@@ -98,14 +98,14 @@ const conversation = ref(null)
 const scrollEl = ref(null)
 
 const OPENING_MESSAGES = {
-  investor: 'Hai, saya tertarik untuk menjadi investor di BandJam',
+  investor: 'Hai, saya tertarik untuk menjadi investor di Re:Jam',
   donate: 'Hai, saya tertarik untuk berdonasi',
-  join_team: 'Hai, saya tertarik untuk bekerja bersama tim BandJam, apakah kalian sedang open for opportunity',
-  add_studio: 'Hai, saya ingin mendaftarkan studio band di database BandJam',
+  join_team: 'Hai, saya tertarik untuk bekerja bersama tim Re:Jam, apakah kalian sedang open for opportunity',
+  add_studio: 'Hai, saya ingin mendaftarkan studio band di database Re:Jam',
   additional_player: 'Hai, saya tertarik untuk menjadi additional player',
 }
 
-const openingMessage = computed(() => OPENING_MESSAGES[topic] || 'Hai, saya ingin menghubungi BandJam')
+const openingMessage = computed(() => OPENING_MESSAGES[topic] || 'Hai, saya ingin menghubungi Re:Jam')
 
 onMounted(async () => {
   try {

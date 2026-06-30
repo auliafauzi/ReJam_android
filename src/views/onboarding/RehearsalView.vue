@@ -11,7 +11,7 @@
     <div class="step-label">LANGKAH 5 DARI 6</div>
     <div class="onboard-header" style="padding-top:6px;">
       <div class="mini-logo"><i class="ti ti-music"></i></div>
-      <span class="mini-brand">BandJam</span>
+      <span class="mini-brand">Re:Jam</span>
     </div>
 
     <h2 class="screen-title">Kapan kamu bisa latihan?</h2>

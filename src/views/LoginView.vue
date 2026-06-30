@@ -35,7 +35,7 @@
           filter="url(#softInnershadow)" />
   </svg>
 </div>
-        <div class="brand-name">BandJam</div>
+        <div class="brand-name">Re:Jam</div>
         <p class="brand-desc">Platform dimana penghobby musik non-profesional bisa bertemu dan bermain musik bersama.</p>
       </div>
       <div class="form-area">

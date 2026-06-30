@@ -2,7 +2,7 @@
   <div class="screen active" id="s-support">
     <div class="onboard-header">
       <div class="mini-logo"><i class="ti ti-music"></i></div>
-      <span class="mini-brand">BandJam</span>
+      <span class="mini-brand">Re:Jam</span>
     </div>
     <h2 class="screen-title">Support Us</h2>
     <p class="screen-subtitle">Dukung kami atau butuh bantuan? Kami siap.</p>
@@ -48,7 +48,7 @@
       <div class="support-group">
         <div class="support-group-label">Ask for Support</div>
 
-        <a href="mailto:support@bandjam.app" class="support-link">
+        <a href="mailto:support@rejam.app" class="support-link">
           <div class="support-card">
             <div class="support-card-title">
               <i class="ti ti-mail"></i> Hubungi kami
@@ -63,7 +63,7 @@
           </div>
           <div v-if="isGuidelinesOpen" class="guidelines-body">
             <p><strong>1. Saling Menghargai</strong><br>
-            BandJam adalah wadah komunitas untuk musisi non-profesional dari segala tingkat keahlian. Jaga tutur kata dan hargai proses belajar sesama member.</p>
+            Re:Jam adalah wadah komunitas untuk musisi non-profesional dari segala tingkat keahlian. Jaga tutur kata dan hargai proses belajar sesama member.</p>
             <p><strong>2. Komitmen Kehadiran</strong><br>
             Jika kamu sudah menyepakati jadwal latihan bersama sebuah band, pastikan untuk hadir tepat waktu demi menghargai waktu rekan musisi lainnya.</p>
           </div>

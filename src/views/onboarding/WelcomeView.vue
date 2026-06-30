@@ -2,7 +2,7 @@
   <div class="screen active" id="s-welcome">
     <div class="welcome-body">
       <div class="welcome-icon"><i class="ti ti-music"></i></div>
-      <h2>Selamat datang di BandJam!</h2>
+      <h2>Selamat datang di Re:Jam!</h2>
       <p>Profil musisimu sudah siap. Yuk, mulai cari teman jamming dan band yang cocok denganmu.</p>
       <div class="checklist">
         <div class="check-item"><i class="ti ti-check"></i><span>Akun berhasil dibuat</span></div>

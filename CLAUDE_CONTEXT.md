@@ -1,13 +1,13 @@
-# BandJam — Claude Context Document
+# Re:Jam — Claude Context Document
 
 > Paste this at the start of every new Claude session to restore full project context.
-> Last updated: June 2026 (Session 2)
+> Last updated: June 2026 (Session 3)
 
 ---
 
 ## Project Overview
 
-**BandJam** is a mobile-first platform for non-professional musicians to randomly meet up and jam together. The platform automatically matches musicians to bands based on location, genre, instrument, rehearsal preference, and skill level.
+**Re:Jam** (formerly BandJam) is a mobile-first platform for non-professional musicians to randomly meet up and jam together. The platform automatically matches musicians to bands based on location, genre, instrument, rehearsal preference, and skill level.
 
 **Key concept**: Bands are created and managed by a superadmin (the founder). The system automatically invites matched users via a matchmaking engine. Users receive invitations, chat with the "band manager" (superadmin posing as the band), and decide whether to join.
 
@@ -17,83 +17,78 @@
 
 ### Backend
 - **Django 5.0.6** + **Django REST Framework**
-- **PostgreSQL** (via Docker, port 5433 on Windows host)
+- **PostgreSQL**
 - **Token Authentication** (DRF TokenAuthentication)
 - **Gunicorn** for production
 - **Whitenoise** for static files
-- Runs via **Docker Compose** (`docker-compose.yml` in `bandjam-django-v2/`)
+- Deployed on **GCP** at **https://api.rejam.click/**
+- Local dev via **Docker Compose** (`docker-compose.yml` in the Django project folder)
 
 ### Frontend
 - **Vue 3** (`<script setup>`) + **Vite**
 - **Pinia** (auth store, bands store)
 - **Vue Router 4** (auth + onboarding guards)
 - **Axios** with Token auth interceptor
-- **Capacitor** for Android APK
+- **Capacitor** for Android APK (`appId: com.rejam.app`)
 - **Leaflet** (planned, backlog)
 
 ### Infrastructure
-- Backend exposed via **ngrok** static domain (free tier)
-- ngrok static URL: set in `bandjam-vue/.env` as `VITE_API_BASE_URL`
-- **Important**: add `ngrok-skip-browser-warning: '1'` header in `src/api/http.js`
-- Django Docker runs on `localhost:8000`
-- Vue dev server on `localhost:5173` (proxies `/api` to `localhost:8000`)
+- **Production backend**: `https://api.rejam.click/` (GCP, real domain)
+- **Local dev**: Docker on `localhost:8000`, Vue dev server on `localhost:5173`
+- For local dev: Vite proxies `/api` to `localhost:8000` (leave `VITE_API_BASE_URL` empty)
+- For APK/production: `VITE_API_BASE_URL=https://api.rejam.click`
+- **ngrok** no longer needed for APK builds (real domain available)
+- **Important**: add `ngrok-skip-browser-warning: '1'` header in `src/api/http.js` if using ngrok for local testing
 
 ---
 
 ## Repository Structure
 
 ```
-bandjam-django-v3_new/
-  bandjam-django-v2/          ← Django backend
-    apps/
-      users/                  ← User model, auth, onboarding
-      bands/                  ← Band, Conversation, MessageTemplate, Genre, Instrument models
-      messaging/              ← Message, SupportConversation, SupportMessage models
-    bandjam/
-      settings/
-        base.py               ← Shared settings (reads DJANGO_ENV)
-        development.py        ← Dev settings (ALLOWED_HOSTS = ["*"])
-        production.py         ← Prod settings
-    docker-compose.yml        ← Volume mount: .:/app
+Django backend (deployed to GCP):
+  apps/
+    users/                  ← User model, auth, onboarding
+    bands/                  ← Band, Conversation, MessageTemplate, Genre, Instrument models
+    messaging/              ← Message, SupportConversation, SupportMessage models
+  docker-compose.yml        ← Volume mount: .:/app (for local dev)
 
-bandjam-vue/
-  bandjam-vue/                ← Vue 3 frontend
-    src/
-      api/
-        http.js               ← Axios instance + ngrok header + token interceptor
-        auth.js               ← Auth API calls
-        bands.js              ← Bands API calls
-        messaging.js          ← Messaging API calls + updateStatus
-        options.js            ← Genre + Instrument API calls
-        support.js            ← Support conversation API calls
-      stores/
-        auth.js               ← Pinia auth store (token, user, onboarding steps, quiz1 in localStorage)
-        bands.js              ← Pinia bands store (band list, conversations, messages)
-      router/index.js         ← Routes + auth/onboarding guards
-      components/
-        BottomNav.vue         ← Shared bottom navigation (Chats, Jam, Support, Profile)
-        GuitarPickIcon.vue    ← Custom SVG guitar pick icon for Jam tab
-        MatchmakingRadar.vue  ← Radar animation (6s, emits 'done')
-      views/
-        LoginView.vue
-        BandsView.vue         ← "Jam" tab — expandable band cards with member list, songlist, status
-        ChatsView.vue         ← Superadmin: band-grouped tree + Support section; User: conversations + Support section
-        ChatDetailView.vue    ← Chat with 3 action buttons (accept/negotiate/decline)
-        ProfileView.vue       ← View-only: nama, email, phone; editable: nama_panggung
-        SupportView.vue       ← "Support Us" tab — two sections: Support Us + Ask for Support
-        SupportChatView.vue   ← User support chat (locked until opening message sent)
-        SupportAdminChatView.vue ← Superadmin reply to support conversations
-        onboarding/
-          SignupView.vue      ← Step 1: email, password, nama, phone, gender
-          InstrumentsView.vue ← Step 2: instruments + genres (fetched from DB)
-          PerformanceQuizView.vue ← Step 3: quiz1 (stored in localStorage)
-          SkillQuizView.vue   ← Step 4: quiz2 (combined with quiz1 → level matrix)
-          LocationView.vue    ← Step 5: kota, kecamatan (up to 2 locations)
-          RehearsalView.vue   ← Step 5b: rehearsal time preference
-          StageNameView.vue   ← Step 6: nama_panggung
-          WelcomeView.vue     ← Onboarding complete
-    capacitor.config.json
-    .env.production           ← VITE_API_BASE_URL=https://your-ngrok-url.ngrok-free.app
+Vue frontend:
+  src/
+    api/
+      http.js               ← Axios instance + ngrok header + token interceptor
+      auth.js               ← Auth API calls
+      bands.js              ← Bands API calls
+      messaging.js          ← Messaging API calls + updateStatus
+      options.js            ← Genre + Instrument API calls
+      support.js            ← Support conversation API calls
+    stores/
+      auth.js               ← Pinia auth store (token, user, onboarding steps, quiz1 in localStorage)
+      bands.js              ← Pinia bands store (band list, conversations, messages)
+    router/index.js         ← Routes + auth/onboarding guards
+    components/
+      BottomNav.vue         ← Shared bottom navigation (Chats, Jam, Support, Profile)
+      GuitarPickIcon.vue    ← Custom SVG guitar pick icon for Jam tab
+      MatchmakingRadar.vue  ← Radar animation (6s, emits 'done')
+    views/
+      LoginView.vue
+      BandsView.vue         ← "Jam" tab — expandable band cards with member list, songlist, status
+      ChatsView.vue         ← Superadmin: band-grouped tree + Support section; User: conversations + Support section
+      ChatDetailView.vue    ← Chat with 3 action buttons (accept/negotiate/decline)
+      ProfileView.vue       ← View-only: nama, email, phone; editable: nama_panggung
+      SupportView.vue       ← "Support Us" tab — two sections: Support Us + Ask for Support
+      SupportChatView.vue   ← User support chat (locked until opening message sent)
+      SupportAdminChatView.vue ← Superadmin reply to support conversations
+      onboarding/
+        SignupView.vue      ← Step 1: email, password, nama, phone, gender
+        InstrumentsView.vue ← Step 2: instruments + genres (fetched from DB)
+        PerformanceQuizView.vue ← Step 3: quiz1 (stored in localStorage)
+        SkillQuizView.vue   ← Step 4: quiz2 (combined with quiz1 → level matrix)
+        LocationView.vue    ← Step 5: kota, kecamatan (up to 2 locations)
+        RehearsalView.vue   ← Step 5b: rehearsal time preference
+        StageNameView.vue   ← Step 6: nama_panggung
+        WelcomeView.vue     ← Onboarding complete
+  capacitor.config.json     ← appId: com.rejam.app, appName: Re:Jam
+  .env.production           ← VITE_API_BASE_URL=https://api.rejam.click
 ```
 
 ---
@@ -147,20 +142,14 @@ bandjam-vue/
 - `admin` (FK to User — the band manager)
 
 ### Conversation Status Flow
-Full status set (user-driven + superadmin-driven):
-| Status | Set by | Meaning |
-|--------|--------|---------|
-| `pending` | System | Matchmaking created invitation, user hasn't responded |
-| `accepted` | User | User is interested |
-| `declined` | User | User rejected |
-| `negotiating` | User | User interested but wants to discuss |
-| `waiting_payment` | Superadmin | Awaiting payment |
-| `ready` | Superadmin | Ready to jam |
-
-UI status badges in Jam tab:
-- 🔴 Red: `pending`, `declined`, `waiting_payment`
-- 🟡 Yellow: `negotiating`
-- 🟢 Green: `accepted`, `ready`
+| Status | Set by | Meaning | Badge color |
+|--------|--------|---------|-------------|
+| `pending` | System | Matchmaking created invitation | 🔴 Red |
+| `accepted` | User | User is interested | 🟢 Green |
+| `declined` | User | User rejected | 🔴 Red |
+| `negotiating` | User | User interested but wants to discuss | 🟡 Yellow |
+| `waiting_payment` | Superadmin | Awaiting payment | 🔴 Red |
+| `ready` | Superadmin | Ready to jam | 🟢 Green |
 
 ### Jam Tab (BandsView)
 - Expandable cards — all collapsed by default
@@ -209,8 +198,8 @@ Message sender: always the superuser (`User.objects.filter(is_superuser=True).fi
 
 ### Android APK
 - Built with Capacitor
-- `capacitor.config.json`: `appId: com.bandjam.app`, `webDir: dist`
-- `.env.production`: `VITE_API_BASE_URL=https://your-ngrok-url.ngrok-free.app`
+- `capacitor.config.json`: `appId: com.rejam.app`, `appName: Re:Jam`, `webDir: dist`
+- `.env.production`: `VITE_API_BASE_URL=https://api.rejam.click`
 - Rebuild flow: `npm run build` → `npx cap copy android` → Build APK in Android Studio
 - App icon: coral-red background, white guitar pick
 
@@ -280,7 +269,10 @@ Message sender: always the superuser (`User.objects.filter(is_superuser=True).fi
 10. ~~**Matchmaking search animation**~~ ✅ Done
 11. **Auto-create band if no match found** — random name, same kota + genre_utama as user
 12. **Generate unique names** — two new tables `band_names_bank` and `user_name_bank` (adjective + noun columns, ~100 rows each); 🎲 dice button on stage name screen
-13. **Confirmation modal for profile changes** — show a confirmation dialog before saving profile updates
+13. **Confirmation modal for profile changes**
+14. **Inline style cleanup** — replace scattered `style="..."` attributes with named CSS classes
+15. ~~**Rebrand to Re:Jam**~~ ✅ Done
+16. **Prioritize alatmusik_utama in matchmaking** — check primary instrument first before falling back to full alatmusik array
 
 ---
 
@@ -295,9 +287,8 @@ Message sender: always the superuser (`User.objects.filter(is_superuser=True).fi
 ---
 
 ## Infrastructure Notes
-- Docker volume mount: `.:/app` in `docker-compose.yml`
-- DB port: `5433:5432` on host (to avoid conflict with native Postgres on Windows)
-- DBeaver connects to `localhost:5433`, user: `bandjam`, pass: `bandjam_secret`, db: `bandjam`
-- ngrok command: `ngrok http --url=https://your-static-domain.ngrok-free.app 8000`
+- **Production**: GCP + `https://api.rejam.click/` — fully deployed, real domain
+- **Local dev DB**: Docker port `5433:5432` on host (to avoid conflict with native Postgres on Windows)
+- DBeaver connects to `localhost:5433`, user: `rejam` (was `bandjam`), pass: check docker-compose, db: `rejam`
 - After `docker-compose.yml` env var changes: must `docker compose down && docker compose up -d` (not just restart)
 - `docker compose restart` only picks up code changes (via volume), NOT env var changes
