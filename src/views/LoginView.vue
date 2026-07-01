@@ -36,7 +36,7 @@
   </svg>
 </div>
         <div class="brand-name">Re:Jam</div>
-        <p class="brand-desc">Platform dimana penghobby musik non-profesional bisa bertemu dan bermain musik bersama.</p>
+        <p class="brand-desc">Platform dimana penghobby musik non-profesional bisa bertemu dan bermain musik bersama. Kejutkan dirimu dengan bertemu orang baru dan eksplor pengalaman bermusik yang baru</p>
       </div>
       <div class="form-area">
         <h3>Log in</h3>
@@ -72,6 +72,9 @@
 
         <span class="divider-text">Belum punya akun?</span>
         <button class="btn-secondary" @click="$router.push('/onboarding/signup')">Daftar</button>
+        <div style="text-align:center; margin-top:12px;">
+          <a href="https://rejam.click/privacy" target="_blank" style="font-size:12px; color: var(--text-dim); text-decoration:underline;">Kebijakan Privasi</a>
+        </div>
 
         <div class="spacer"></div>
       </div>
