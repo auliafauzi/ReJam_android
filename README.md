@@ -1,7 +1,7 @@
-# BandJam — Vue Frontend
+# Re:Jam — Vue Frontend
 
-A Vue 3 + Vite single-page app implementing the BandJam mockup, wired to the
-Django REST backend in `bandjam-django-v2`.
+A Vue 3 + Vite single-page app implementing the Re:Jam mockup, wired to the
+Django REST backend in `rejam-django-v2`.
 
 ## Stack
 
@@ -22,7 +22,7 @@ By default `vite.config.js` proxies `/api/*` to `http://localhost:8000`, so
 run the Django backend on port 8000 (see its own README/docker-compose).
 
 In production, set `VITE_API_BASE_URL` to your deployed API origin, e.g.
-`https://api.bandjam.app`, and ensure that origin is in the backend's
+`https://api.rejam.app`, and ensure that origin is in the backend's
 `CORS_ALLOWED_ORIGINS`.
 
 ## Structure
