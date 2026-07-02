@@ -73,7 +73,7 @@
         <span class="divider-text">Belum punya akun?</span>
         <button class="btn-secondary" @click="$router.push('/onboarding/signup')">Daftar</button>
         <div style="text-align:center; margin-top:12px;">
-          <a href="https://rejam.click/privacy" target="_blank" style="font-size:12px; color: var(--text-dim); text-decoration:underline;">Kebijakan Privasi</a>
+          <a href="https://api.rejam.click/static/legal/privacy-policy.html" target="_blank" style="font-size:12px; color: var(--text-dim); text-decoration:underline;">Kebijakan Privasi</a>
         </div>
 
         <div class="spacer"></div>

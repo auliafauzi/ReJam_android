@@ -1,5 +1,5 @@
 <template>
-  <div class="signup-page-wrapper" style="position: relative; min-height: 100vh;">
+  <div class="signup-page-wrapper" style="position: relative;">
     
     <!-- 1. VUE MODAL MULTI-TAB & MULTI-BAHASA (DRAF DIPERBARUI) -->
     <div v-if="showModal" class="modal-overlay">
@@ -394,7 +394,7 @@ async function handleNext() {
 }
 
 .doc-tab-btn.active {
-  color: #2563eb;
+  color: #e0635f;
 }
 
 .doc-tab-btn.active::after {
@@ -404,7 +404,7 @@ async function handleNext() {
   left: 0;
   width: 100%;
   height: 2px;
-  background: #2563eb;
+  background: #e0635f;
 }
 
 /* Kotak Konten Teks Legal Ber-scroll */
