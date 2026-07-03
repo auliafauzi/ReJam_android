@@ -51,13 +51,45 @@
 
       <div class="section-tag" style="margin-top:20px;">Level</div>
       <div class="band-card-sub">{{ levelLabel }}</div>
+
+      <div style="margin-top: 20px; padding-top: 4px; border-top: 0.5px solid var(--border); text-align: center;">
+        <p style="color: var(--text-muted); font-size: 11px; margin-bottom: 1px; line-height: 1.4;padding: 0 10px;">
+          Ingin berhenti menggunakan layanan kami dan menghapus data Anda?
+        </p>
+          <a 
+            href="https://api.rejam.click/static/legal/delete-account-request.html" 
+            target="_blank" 
+            style="color: var(--red); font-size: 13px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;padding-bottom: 20px;"
+          >
+            <i class="ti ti-trash"></i> Permintaan Penghapusan Akun
+        </a>
+    </div>
+
     </div>
 
     <div class="btn-row">
       <button class="btn-ghost" :disabled="saving" @click="handleLogout"><i class="ti ti-logout"></i>Keluar</button>
-      <button class="btn-primary" :disabled="saving" @click="handleSave">
+      <button class="btn-primary" :disabled="saving" @click="showConfirmModal= true">
         {{ saving ? 'Menyimpan...' : 'Simpan' }}
       </button>
+    </div>
+
+    <div v-if="showConfirmModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+      <div style="background: #1a1311; border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
+        <h3 style="color: #fff; margin-bottom: 10px; font-size: 18px; font-weight: 700;">Simpan Perubahan?</h3>
+        <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 24px;">
+          Apakah Anda yakin ingin memperbarui data profil Re:Jam Anda?
+        </p>
+        
+        <div style="display: flex; gap: 12px;">
+          <button @click="showConfirmModal = false" class="btn-ghost" style="flex: 1; padding: 10px; margin: 0;">
+            Batal
+          </button>
+          <button @click="triggerSave" class="btn-primary" style="flex: 1; padding: 10px; margin: 0;">
+            Ya, Simpan
+          </button>
+        </div>
+      </div>
     </div>
 
     <BottomNav />
@@ -78,6 +110,7 @@ const user = computed(() => auth.user)
 const error = ref('')
 const saving = ref(false)
 const saved = ref(false)
+const showConfirmModal = ref(false)
 
 const form = reactive({
   nama_panggung: '',
@@ -121,6 +154,11 @@ const LEVEL_LABELS = {
   advanced: 'Advanced',
 }
 const levelLabel = computed(() => LEVEL_LABELS[user.value?.level] || '-')
+
+function triggerSave() {
+  showConfirmModal.value = false; // Tutup modal konfirmasi
+  handleSave();                   // Jalankan fungsi hit ke backend Django
+}
 
 async function handleSave() {
   error.value = ''
