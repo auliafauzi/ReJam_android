@@ -292,3 +292,36 @@ Message sender: always the superuser (`User.objects.filter(is_superuser=True).fi
 - DBeaver connects to `localhost:5433`, user: `rejam` (was `bandjam`), pass: check docker-compose, db: `rejam`
 - After `docker-compose.yml` env var changes: must `docker compose down && docker compose up -d` (not just restart)
 - `docker compose restart` only picks up code changes (via volume), NOT env var changes
+
+---
+
+## 🚀 Before Release Checklist
+
+### ✅ Completed
+- [x] App icon (guitar pick, coral background, all densities generated)
+- [x] Privacy Policy + Terms & Conditions modal in `SignupView.vue`
+- [x] Privacy Policy hosted at `https://api.rejam.click/static/legal/privacy-policy.html`
+- [x] Privacy Policy link in `LoginView.vue`
+- [x] Production backend deployed on GCP at `https://api.rejam.click/`
+- [x] `appId: com.rejam.app` set in `capacitor.config.json`
+- [x] `.env.production` pointing to `https://api.rejam.click`
+- [x] `is_terms_agreed` + `agreed_at` fields added to User model
+- [x] Keystore file generated (`rejam-release.jks`) — **back up securely!**
+- [x] Release AAB built and signed in Android Studio
+
+### ❌ Pending
+- [ ] **Splash screen** — set up via Capacitor Assets
+- [ ] **Google Play Developer account** — $25 one-time fee at play.google.com/console
+- [ ] **Store listing assets**:
+  - [ ] App description (short + long, Indonesian + English)
+  - [ ] Screenshots (phone)
+  - [ ] Feature graphic (1024×500px banner)
+  - [ ] Content rating questionnaire (18+)
+  - [ ] Privacy policy URL entry in Play Console
+- [ ] **Fix SignupView blank screen** — after modal closes, form is blank (CSS/template structure issue, under investigation)
+- [ ] **Frontend brand name** — some "BandJam" references may still exist in frontend files
+
+### ⚠️ Important Notes
+- Keystore file (`rejam-release.jks`) must be backed up — losing it means you can never update the app on Play Store
+- Keystore passwords must be saved securely
+- `collectstatic` must be run on GCP after any static file changes: `docker compose exec api python manage.py collectstatic --noinput`
