@@ -1,4 +1,4 @@
-package com.bandjam.app;
+package com.rejam.app;
 
 import com.getcapacitor.BridgeActivity;
 
