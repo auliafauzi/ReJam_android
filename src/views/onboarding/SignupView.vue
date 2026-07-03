@@ -170,6 +170,7 @@
 
     <!-- 2. FORM EXISTING LANGKAH 1 DARI 6 -->
     <div class="screen active" id="s-step1" :class="{ 'blur-background': showModal }">
+    <!-- <div v-else style="display: block; position: relative; z-index: 1; padding: 20px; color: #000000 !important;"> -->
       <div class="progress-bar">
         <div class="prog-seg done"></div>
         <div class="prog-seg"></div>
@@ -290,7 +291,7 @@ async function handleNext() {
       phone: form.phone,
       gender: form.gender,
       avatar_color: randomAvatarColor(),
-      isTermsAgreed: true
+      is_terms_agreed: true
     })
     router.push('/onboarding/instruments')
   } catch {
@@ -480,4 +481,31 @@ async function handleNext() {
   filter: blur(2px);
   pointer-events: none;
 }
+
+/* Memaksa container utama tetap terlihat dan responsif saat modal ditutup */
+.signup-page-wrapper .screen.active {
+  display: flex !important;
+  flex-direction: column !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  height: 100% !important;
+  position: relative !important;
+}
+
+/* Memastikan area scroll input form memakan ruang vertikal yang tersedia */
+.signup-page-wrapper .scroll-body {
+  flex: 1 !important;
+  display: block !important;
+  overflow-y: auto !important;
+  opacity: 1 !important;
+}
+
+/* Memastikan teks label dan input di dalamnya berwarna pekat dan terlihat */
+.signup-page-wrapper .field-label,
+.signup-page-wrapper .screen-title,
+.signup-page-wrapper .screen-subtitle {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
 </style>
