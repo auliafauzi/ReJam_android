@@ -61,6 +61,12 @@ body {
     border: none;
     box-shadow: none;
   }
+  /* Keep screen content clear of the status bar and gesture/nav bar
+     on real devices (Capacitor edge-to-edge WebView). */
+  .screen {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* BG texture for login */
