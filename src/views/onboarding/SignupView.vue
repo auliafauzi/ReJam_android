@@ -161,7 +161,7 @@
           <button class="btn-ghost" @click="$router.push('/login')">
             {{ activeLang === 'ID' ? 'Batal' : 'Cancel' }}
           </button>
-          <button class="btn-primary" :disabled="!hasCheckedBox" @click="modals.value.privacyAndTerms = false">
+          <button class="btn-primary" :disabled="!hasCheckedBox" @click="exitPrivacyAndTermsModal()">
             {{ activeLang === 'ID' ? 'Lanjutkan Pendaftaran' : 'Continue Registration' }}
           </button>
         </div>
@@ -247,7 +247,7 @@ const router = useRouter()
 const auth = useAuthStore()
 
 // State Pengendali Modal & Tab Navigasi
-const showModal = ref(true)
+// const showModal = ref(true)
 const modals = inject('globalModals');
 modals.value.privacyAndTerms = true
 const hasCheckedBox = ref(false)
@@ -271,6 +271,13 @@ const AVATAR_COLORS = ['#e0635f', '#e0a35f', '#5fb0e0', '#8a5fe0', '#5fe0a3', '#
 
 function randomAvatarColor() {
   return AVATAR_COLORS[Math.floor(Math.random() * AVATAR_COLORS.length)]
+}
+
+async function showPrivacyAndTermsModal() {
+  modals.value.privacyAndTerms = true;
+}
+const exitPrivacyAndTermsModal = () => {
+ modals.value.privacyAndTerms = false;
 }
 
 async function handleNext() {

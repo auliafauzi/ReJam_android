@@ -55,7 +55,7 @@ const props = defineProps({
   },
   duration: {
     type: Number,
-    default: 10000,
+    default: 3000,
   },
   autoStop: {
     type: Boolean,

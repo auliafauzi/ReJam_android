@@ -1,16 +1,11 @@
 import { defineStore } from 'pinia'
 import { authApi } from '../api/auth'
+import { usePopupStore } from './popup'
 
 const TOKEN_KEY = 'bandjam_token'
 const USER_KEY = 'bandjam_user'
 
 export const useAuthStore = defineStore('auth', {
-  // state: () => ({
-  //   token: localStorage.getItem(TOKEN_KEY) || null,
-  //   user: JSON.parse(localStorage.getItem(USER_KEY) || 'null'),
-  //   loading: false,
-  //   error: null,
-  // }),
   state: () => ({
     token: localStorage.getItem(TOKEN_KEY) || null,
     user: JSON.parse(localStorage.getItem(USER_KEY) || 'null'),
@@ -43,6 +38,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const { data } = await authApi.signup(payload)
         this._persist(data.token, data.user)
+        usePopupStore().fetchActive()
         return data.user
       } catch (err) {
         this.error = extractError(err)
@@ -59,6 +55,7 @@ export const useAuthStore = defineStore('auth', {
         const { data } = await authApi.login(payload)
         this._persist(data.token, data.user)
         localStorage.removeItem('bandjam_matchmaking_shown')
+        usePopupStore().fetchActive()
         return data.user
       } catch (err) {
         this.error = extractError(err)
@@ -101,18 +98,6 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
-    // async submitStep3(payload) {
-    //   this.error = null
-    //   try {
-    //     const { data } = await authApi.onboardingStep3(payload)
-    //     this.setUser(data)
-    //     return data
-    //   } catch (err) {
-    //     this.error = extractError(err)
-    //     throw err
-    //   }
-    // },
-
     async submitStep3(payload) {
       this.error = null
       try {
@@ -126,18 +111,6 @@ export const useAuthStore = defineStore('auth', {
         throw err
       }
     },
-
-    // async submitStep4(payload) {
-    //   this.error = null
-    //   try {
-    //     const { data } = await authApi.onboardingStep4(payload)
-    //     this.setUser(data)
-    //     return data
-    //   } catch (err) {
-    //     this.error = extractError(err)
-    //     throw err
-    //   }
-    // },
 
     async submitStep4(payload) {
       this.error = null
