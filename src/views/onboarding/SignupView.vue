@@ -2,7 +2,7 @@
   <div class="signup-page-wrapper" style="position: relative;">
     
     <!-- 1. VUE MODAL MULTI-TAB & MULTI-BAHASA (DRAF DIPERBARUI) -->
-    <div v-if="showModal" class="modal-overlay">
+    <div v-if="modals.privacyAndTerms" class="modal-overlay">
       <div class="modal-box">
         
         <!-- Header Modal & Selector Bahasa -->
@@ -161,7 +161,7 @@
           <button class="btn-ghost" @click="$router.push('/login')">
             {{ activeLang === 'ID' ? 'Batal' : 'Cancel' }}
           </button>
-          <button class="btn-primary" :disabled="!hasCheckedBox" @click="showModal = false">
+          <button class="btn-primary" :disabled="!hasCheckedBox" @click="modals.value.privacyAndTerms = false">
             {{ activeLang === 'ID' ? 'Lanjutkan Pendaftaran' : 'Continue Registration' }}
           </button>
         </div>
@@ -169,7 +169,7 @@
     </div>
 
     <!-- 2. FORM EXISTING LANGKAH 1 DARI 6 -->
-    <div class="screen active" id="s-step1" :class="{ 'blur-background': showModal }">
+    <div class="screen active" id="s-step1" :class="{ 'blur-background': modals.privacyAndTerms }">
     <!-- <div v-else style="display: block; position: relative; z-index: 1; padding: 20px; color: #000000 !important;"> -->
       <div class="progress-bar">
         <div class="prog-seg done"></div>
@@ -239,7 +239,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
 
@@ -248,6 +248,8 @@ const auth = useAuthStore()
 
 // State Pengendali Modal & Tab Navigasi
 const showModal = ref(true)
+const modals = inject('globalModals');
+modals.value.privacyAndTerms = true
 const hasCheckedBox = ref(false)
 const activeDoc = ref('terms')    // 'terms' atau 'privacy'
 const activeLang = ref('ID')      // 'ID' atau 'EN'
@@ -263,6 +265,7 @@ const form = reactive({
 const showPassword = ref(false)
 const loading = ref(false)
 const error = ref('')
+
 
 const AVATAR_COLORS = ['#e0635f', '#e0a35f', '#5fb0e0', '#8a5fe0', '#5fe0a3', '#e05f9e']
 

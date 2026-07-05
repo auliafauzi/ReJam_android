@@ -69,12 +69,12 @@
 
     <div class="btn-row">
       <button class="btn-ghost" :disabled="saving" @click="handleLogout"><i class="ti ti-logout"></i>Keluar</button>
-      <button class="btn-primary" :disabled="saving" @click="showConfirmModal= true">
+      <button class="btn-primary" :disabled="saving" @click="ShowConfirmModal()">
         {{ saving ? 'Menyimpan...' : 'Simpan' }}
       </button>
     </div>
 
-    <div v-if="showConfirmModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div v-if="modals.confirm" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;">
       <div style="background: #1a1311; border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
         <h3 style="color: #fff; margin-bottom: 10px; font-size: 18px; font-weight: 700;">Simpan Perubahan?</h3>
         <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 24px;">
@@ -82,7 +82,7 @@
         </p>
         
         <div style="display: flex; gap: 12px;">
-          <button @click="showConfirmModal = false" class="btn-ghost" style="flex: 1; padding: 10px; margin: 0;">
+          <button @click="exitcConfirmModal" class="btn-ghost" style="flex: 1; padding: 10px; margin: 0;">
             Batal
           </button>
           <button @click="triggerSave" class="btn-primary" style="flex: 1; padding: 10px; margin: 0;">
@@ -97,7 +97,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore, extractError } from '../stores/auth'
 import { authApi } from '../api/auth'
@@ -110,7 +110,8 @@ const user = computed(() => auth.user)
 const error = ref('')
 const saving = ref(false)
 const saved = ref(false)
-const showConfirmModal = ref(false)
+// const showConfirmModal = ref(false)
+const modals = inject('globalModals');
 
 const form = reactive({
   nama_panggung: '',
@@ -156,7 +157,7 @@ const LEVEL_LABELS = {
 const levelLabel = computed(() => LEVEL_LABELS[user.value?.level] || '-')
 
 function triggerSave() {
-  showConfirmModal.value = false; // Tutup modal konfirmasi
+  modals.value.confirm = false; // Tutup modal konfirmasi
   handleSave();                   // Jalankan fungsi hit ke backend Django
 }
 
@@ -175,6 +176,14 @@ async function handleSave() {
     saving.value = false
   }
 }
+
+async function ShowConfirmModal() {
+  modals.value.confirm = true;
+}
+const exitcConfirmModal = () => {
+ modals.value.confirm = false;
+}
+// kedua script diatas dipakai untuk membuka dan menutup modal; fungsi nya ternyata sama hanya perbedaan gaya penulisan
 
 async function handleLogout() {
   await auth.logout()
