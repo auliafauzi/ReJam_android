@@ -24,4 +24,10 @@ export const bandsApi = {
     const params = convId ? `?conv_id=${convId}` : ''
     return http.get(`/api/bands/${bandId}/conversation/${params}`)
   },
+  requestDelete: (bandId,payload) => {
+    return http.post(`/api/bands/${bandId}/request-delete/`, payload)
+  },
+  forceMatch: (bandId,payload) => {
+    return http.post(`/api/bands/${bandId}/force-match/`, payload)
+  },
 }

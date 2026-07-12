@@ -17,6 +17,7 @@ import ProfileView from '../views/ProfileView.vue'
 import RehearsalView from '../views/onboarding/RehearsalView.vue'
 import SupportChatView from '../views/SupportChatView.vue'
 import SupportAdminChatView from '../views/SupportAdminChatView.vue'
+import CreateBandView from '../views/CreateBandView.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -44,6 +45,7 @@ const routes = [
   //For Support chat
   { path: '/support/:topic', name: 'support-chat', component: SupportChatView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/support-admin/:convId', name: 'support-admin-chat', component: SupportAdminChatView, meta: { requiresAuth: true, requiresOnboarding: true } },
+  { path: '/bands/create', name: 'create-band', component: CreateBandView, meta: { requiresAuth: true, requiresOnboarding: true }},
 ]
 
 const router = createRouter({

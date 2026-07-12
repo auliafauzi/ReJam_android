@@ -5,7 +5,7 @@
       v-if="showRadar"
       :message="radarMessage"
       :auto-stop="true"
-      :duration="6000"
+      :duration="2000"
       @done="onRadarDone"
     />
 
@@ -15,7 +15,13 @@
         <span class="mini-brand">Re:Jam</span>
       </div>
       <h2 class="screen-title">Jam</h2>
-      <p class="screen-subtitle">Band yang sudah mengundangmu.</p>
+      <!-- <p class="screen-subtitle">Band yang sudah mengundangmu.</p> -->
+      <div class="header-action-row">
+        <p class="screen-subtitle">Band yang sudah mengundangmu.</p>
+        <button class="btn-create-band-small" @click="handleCreateBandClick">
+          <i class="ti ti-plus"></i> Buat Band
+        </button>
+      </div>
 
       <div class="scroll-body">
         <div v-if="loading" class="center-state">
@@ -30,6 +36,35 @@
           <span>Belum ada band yang terhubung denganmu.</span>
           <span style="font-size:11px;">Band akan muncul di sini saat ada yang mengundangmu untuk jamming.</span>
         </div>
+
+        <div v-if="showBandLimitModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+          <div style="background: #1a1311; border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
+              <!-- <h3 style="color: #fff; margin-bottom: 10px; font-size: 18px; font-weight: 700;">Simpan Perubahan?</h3> -->
+              <p style="color: var(--text-muted); font-size: 14px; line-height: 1.5; margin-bottom: 24px;">
+                Satu user hanya dapat membuat 1 band, hapus band anda sebelumnya jika kamu ingin membuat band baru.
+              </p>
+              <button class="btn-primary" @click="showBandLimitModal = false">Tutup</button>    
+            </div>
+          </div>
+
+          <div v-if="modals.confirm" style="position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: #1a1311; border: 1px solid var(--border); border-radius: 16px; padding: 24px; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.5);">
+              <h3 style="color: #fff; margin-bottom: 10px; font-size: 18px; font-weight: 700;">Pengajuan hapus band</h3>
+              <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 24px;">
+                Apakah Anda yakin ingin menghapus band Anda?
+              </p>
+              
+              <div style="display: flex; gap: 12px;">
+                <button @click="exitConfirmModal" class="btn-ghost" style="flex: 1; padding: 10px; margin: 0;">
+                  Batal
+                </button>
+                <button @click="triggerConfirm(band)" class="btn-primary" style="flex: 1; padding: 10px; margin: 0;">
+                  Ya
+                </button>
+              </div>
+            </div>
+          </div>
+
 
         <!-- Band cards -->
         <div
@@ -59,6 +94,19 @@
           <!-- Expanded content -->
           <div v-if="expandedBands.includes(band.id)" class="jam-card-body">
 
+            <div v-if="band.created_by === auth.user?.id" style="margin-top: 10px;">
+              <button 
+                @click="showConfirmModal(band)" 
+                :disabled="band.delete_request"
+                :class="['btn-primary', band.delete_request ? 'disabled' : '']"
+                style="width: 100%; padding: 10px; font-size: 11px; cursor: pointer;"
+              >
+                <i class="ti ti-trash"></i> 
+                {{ band.delete_request ? 'Menunggu Admin...' : 'Hapus Band' }}
+              </button>
+            </div>
+            <p v-if="requestDeleteSent===true" style="font-size:11px">Permintaan hapus band sudah diajukan</p>
+
             <!-- Status badge -->
             <div v-if="band.conversation_status" class="status-badge-row">
               <div class="status-badge" :class="statusClass(band.conversation_status)">
@@ -72,6 +120,8 @@
               <i class="ti ti-calendar"></i>
               <span>{{ formatDate(band.rehersal_datetime) }}</span>
             </div>
+
+
 
             <!-- Member list -->
             <div class="member-list">
@@ -110,6 +160,8 @@
               <i class="ti ti-message-circle"></i> Chat
             </button>
 
+            
+
             <!-- Songlist -->
             <div v-if="band.songlist && band.songlist.length > 0" class="songlist">
               <div class="songlist-label">Songlist:</div>
@@ -128,10 +180,11 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref, inject} from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth'
+import { useAuthStore, extractError } from '../stores/auth'
 import { useBandsStore } from '../stores/bands'
+import { bandsApi } from '../api/bands'
 import BottomNav from '../components/BottomNav.vue'
 import MatchmakingRadar from '../components/MatchmakingRadar.vue'
 
@@ -139,15 +192,33 @@ const router = useRouter()
 const auth = useAuthStore()
 const store = useBandsStore()
 
+let bandData = ref('')
+let requestDeleteSent = ref(false)
 const loading = ref(true)
 const error = ref('')
+const saving = ref(false)
+const saved = ref(false)
 const bands = ref([])
 const expandedBands = ref([])
 const showRadar = ref(false)
 const radarMessage = ref('Sedang mencari band untukmu')
 const radarShownOnce = ref(false)
-
 const RADAR_KEY = 'bandjam_matchmaking_shown'
+const showBandLimitModal = ref(false)
+const modals = inject('globalModals');
+const userHasCreatedBand = computed(() => {
+  // Pastikan bands sudah terisi
+  if (!bands.value || !auth.user) return false;
+  // Cek apakah ada band di list yang created_by-nya adalah user yang sedang login
+  return bands.value.some(band => band.created_by === auth.user.id);
+});
+const handleCreateBandClick = () => {
+  if (userHasCreatedBand.value) {
+    showBandLimitModal.value = true // Gunakan nama baru
+  } else {
+    router.push('/bands/create')
+  }
+}
 
 onMounted(async () => {
   const firstTime = !localStorage.getItem(RADAR_KEY)
@@ -249,6 +320,56 @@ function formatDate(iso) {
     hour: '2-digit', minute: '2-digit'
   })
 }
+
+// async function handleRequestDelete(band) {
+//   if (!confirm("Apakah Anda yakin ingin mengajukan penghapusan band ini?")) return;
+
+//   try {
+//     await bandsApi.requestDelete(band.id);
+//     band.delete_request = true; // Update status lokal agar UI langsung bereaksi
+//     alert("Request penghapusan berhasil dikirim ke admin.");
+//   } catch (err) {
+//     alert("Gagal mengirim request: " + (err.response?.data?.error || "Terjadi kesalahan"));
+//   }
+// }
+function showConfirmModal(band) {
+  console.log("di showConfirmModal. band:", band)
+  bandData = band
+  modals.value.confirm = true;
+}
+function triggerConfirm(band) {
+  modals.value.confirm = false; // Tutup modal konfirmasi
+  handleDeleteRequest(bandData);                   // Jalankan fungsi hit ke backend Django
+  console.log("di triggerConfirm. band:", band)
+  console.log("di triggerConfirm. bandData:", bandData)
+  console.log("di triggerConfirm. auth:", auth)
+}
+function exitConfirmModal() {
+  modals.value.confirm = false
+}
+
+async function handleDeleteRequest(bandData) {
+  console.log("sampai handleDeleteRequest")
+  // console.log("band:", band)
+  error.value = ''
+  saved.value = false
+  saving.value = true
+
+  try {
+    const { data } = await bandsApi.requestDelete(bandData.id,auth)
+    // auth.setUser(data)
+    // saved.value = true
+    setTimeout(() => (saved.value = false), 2000)
+    requestDeleteSent = true
+    // band.delete_request = true
+  } catch (err) {
+    error.value = extractError(err)
+  } 
+  // finally {
+  //   saving.value = false
+  // }
+}
+
 </script>
 
 <style scoped>
@@ -389,4 +510,37 @@ function formatDate(iso) {
   gap: 6px;
   margin-bottom: 4px;
 }
+
+
+.header-action-row {
+  display: flex;
+  align-items: center; /* Menjajarkan teks dan tombol secara vertikal */
+  justify-content: flex-start; /* Mendorong teks ke kiri dan tombol ke kanan */
+  margin-bottom: 12px;
+  padding: 0 0px;
+  gap: 2px;
+}
+
+.btn-create-band-small {
+  /*margin-left: auto;*/
+  width: 33.33%; /* Tepat 1/3 lebar layar */
+  padding: 8px 0;
+  background: transparent;
+  color: var(--text-white);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-create-band-small:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--primary);
+}
+
 </style>

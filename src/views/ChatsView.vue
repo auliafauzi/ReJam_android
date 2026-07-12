@@ -6,7 +6,7 @@
       v-if="showRadar"
       :message="radarMessage"
       :auto-stop="true"
-      :duration="3000"
+      :duration="2000"
       @done="onRadarDone"
     />
 

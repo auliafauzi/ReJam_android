@@ -35,7 +35,15 @@ export const useBandsStore = defineStore('bands', {
     },
 
     async createBand(payload) {
+      // console.log("sampai createBand di stores js");
       const { data } = await bandsApi.create(payload)
+      this.bands.unshift(data)
+      return data
+    },
+
+    async forceMatch(payload) {
+      console.log("sampai forceMatch di stores js")
+      const { data } = await bandsApi.forceMatch(bandId, payload)
       this.bands.unshift(data)
       return data
     },
