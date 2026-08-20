@@ -223,7 +223,7 @@ const handleCreateBandClick = () => {
 onMounted(async () => {
   const firstTime = !localStorage.getItem(RADAR_KEY)
   if (firstTime) {
-    radarMessage.value = 'Sedang mencari band untukmu'
+    radarMessage.value = 'Sedang mencari jam session untukmu'
     showRadar.value = true
     localStorage.setItem(RADAR_KEY, '1')
     return
@@ -238,7 +238,7 @@ async function fetchBands() {
     await store.fetchBands()
     bands.value = store.bands
     if (bands.value.length === 0 && !radarShownOnce.value) {
-      radarMessage.value = 'Mencari ulang band yang cocok untukmu'
+      radarMessage.value = 'Mencari ulang jam session yang cocok untukmu'
       showRadar.value = true
       radarShownOnce.value = true
       return
