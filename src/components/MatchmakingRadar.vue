@@ -51,7 +51,7 @@ import BottomNav from './BottomNav.vue'
 const props = defineProps({
   message: {
     type: String,
-    default: 'Sedang mencari band untukmu',
+    default: 'Sedang mencari jam session untukmu',
   },
   duration: {
     type: Number,

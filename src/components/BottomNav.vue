@@ -7,7 +7,7 @@
       </div>
       <span>Chats</span>
     </router-link>
-    <router-link to="/bands" class="nav-item" :class="{ active: isActive('bands') }">
+    <router-link to="/jam-sessions" class="nav-item" :class="{ active: isActive('jam-sessions') }">
       <GuitarPickIcon :size="20" />
       <span>Jam</span>
     </router-link>
@@ -22,12 +22,12 @@
 
 <script setup>
 import { useRoute } from 'vue-router'
-import { useBandsStore } from '../stores/bands'
+import { useJamSessionsStore } from '../stores/jamSessions'
 import GuitarPickIcon from './GuitarPickIcon.vue'
 
 const route = useRoute()
-const bandsStore = useBandsStore()
-const unread = bandsStore.totalUnread
+const jamSessionsStore = useJamSessionsStore()
+const unread = jamSessionsStore.totalUnread
 
 function isActive(section) {
   return route.path.startsWith(`/${section}`)

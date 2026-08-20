@@ -65,7 +65,7 @@
             <p><strong>1. Saling Menghargai</strong><br>
             Re:Jam adalah wadah komunitas untuk musisi non-profesional dari segala tingkat keahlian. Jaga tutur kata dan hargai proses belajar sesama member.</p>
             <p><strong>2. Komitmen Kehadiran</strong><br>
-            Jika kamu sudah menyepakati jadwal latihan bersama sebuah band, pastikan untuk hadir tepat waktu demi menghargai waktu rekan musisi lainnya.</p>
+            Jika kamu sudah menyepakati jadwal latihan bersama sebuah jam session, pastikan untuk hadir tepat waktu demi menghargai waktu rekan musisi lainnya.</p>
           </div>
         </div>
       </div>

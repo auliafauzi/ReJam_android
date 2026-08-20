@@ -17,7 +17,7 @@
       </div>
       <h2 class="screen-title">Chats</h2>
       <p class="screen-subtitle">
-        {{ isAdmin ? 'Kelola percakapan semua band.' : 'Percakapan dengan band-band yang mengundangmu.' }}
+        {{ isAdmin ? 'Kelola percakapan semua jam session.' : 'Percakapan dengan jam session yang mengundangmu.' }}
       </p>
 
       <div class="scroll-body">
@@ -31,30 +31,30 @@
         <!-- ── SUPERADMIN VIEW ── -->
         <template v-else-if="isAdmin">
 
-          <div v-if="bands.length === 0 && supportConvs.length === 0" class="center-state">
+          <div v-if="jamSessions.length === 0 && supportConvs.length === 0" class="center-state">
             <i class="ti ti-music" style="font-size:32px; color: var(--text-dim);"></i>
-            <span>Belum ada band.</span>
+            <span>Belum ada jam session.</span>
           </div>
 
-          <!-- Band conversations -->
-          <div v-for="band in bands" :key="band.id" style="margin-bottom:16px;">
+          <!-- Jam Session conversations -->
+          <div v-for="jamSession in jamSessions" :key="jamSession.id" style="margin-bottom:16px;">
             <div style="color: var(--red); font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px;">
-              {{ band.nama }}
+              {{ jamSession.nama }}
               <span style="color: var(--text-dim); font-weight:400; text-transform:none; letter-spacing:0;">
-                · {{ Array.isArray(band.genre) ? band.genre.join(', ') : band.genre }}
+                · {{ Array.isArray(jamSession.genre) ? jamSession.genre.join(', ') : jamSession.genre }}
               </span>
             </div>
 
-            <div v-if="band.conversations.length === 0" style="color: var(--text-dim); font-size:12px; padding: 0 0 8px 8px;">
+            <div v-if="jamSession.conversations.length === 0" style="color: var(--text-dim); font-size:12px; padding: 0 0 8px 8px;">
               Belum ada percakapan.
             </div>
 
             <div
-              v-for="conv in band.conversations"
+              v-for="conv in jamSession.conversations"
               :key="conv.id"
               class="band-card"
               style="margin-bottom:8px; cursor:pointer;"
-              @click="openAdminChat(band, conv)"
+              @click="openAdminChat(jamSession, conv)"
             >
               <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
@@ -96,21 +96,21 @@
         <!-- ── REGULAR USER VIEW ── -->
         <template v-else>
 
-          <div v-if="bands.length === 0 && supportConvs.length === 0" class="center-state">
+          <div v-if="jamSessions.length === 0 && supportConvs.length === 0" class="center-state">
             <i class="ti ti-message-circle" style="font-size:32px; color: var(--text-dim);"></i>
             <span>Belum ada percakapan.</span>
           </div>
 
-          <!-- Band conversations -->
-          <div v-for="band in bands" :key="band.id" class="band-card" @click="openChat(band)">
+          <!-- Jam Session conversations -->
+          <div v-for="jamSession in jamSessions" :key="jamSession.id" class="band-card" @click="openChat(jamSession)">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
               <div>
-                <div class="band-card-title">{{ band.nama }}</div>
+                <div class="band-card-title">{{ jamSession.nama }}</div>
                 <div class="band-card-sub">
-                  {{ band.has_replied ? 'Sudah dibalas' : 'Menunggu balasanmu' }}
+                  {{ jamSession.has_replied ? 'Sudah dibalas' : 'Menunggu balasanmu' }}
                 </div>
               </div>
-              <span v-if="band.unread_count > 0" class="badge">{{ band.unread_count }}</span>
+              <span v-if="jamSession.unread_count > 0" class="badge">{{ jamSession.unread_count }}</span>
             </div>
           </div>
 
@@ -150,50 +150,50 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { useBandsStore } from '../stores/bands'
+import { useJamSessionsStore } from '../stores/jamSessions'
 import { supportApi } from '../api/support'
 import BottomNav from '../components/BottomNav.vue'
 import MatchmakingRadar from '../components/MatchmakingRadar.vue'
 
 const router = useRouter()
 const auth = useAuthStore()
-const store = useBandsStore()
+const store = useJamSessionsStore()
 
 const isAdmin = computed(() => auth.user?.is_superuser)
 const loading = ref(true)
 const error = ref('')
-const bands = ref([])
+const jamSessions = ref([])
 const supportConvs = ref([])
 const showRadar = ref(false)
-const radarMessage = ref('Sedang mencari band untukmu')
+const radarMessage = ref('Sedang mencari jam session untukmu')
 const radarShownOnce = ref(false)
 
-const RADAR_KEY = 'bandjam_matchmaking_shown'
+const RADAR_KEY = 'rejam_matchmaking_shown'
 
 onMounted(async () => {
   if (isAdmin.value) {
-    await fetchBands()
+    await fetchJamSessions()
     return
   }
 
   const firstTime = !localStorage.getItem(RADAR_KEY)
   if (firstTime) {
-    radarMessage.value = 'Sedang mencari band untukmu'
+    radarMessage.value = 'Sedang mencari jam session untukmu'
     showRadar.value = true
     localStorage.setItem(RADAR_KEY, '1')
     return
   }
 
-  await fetchBands()
+  await fetchJamSessions()
 })
 
-async function fetchBands() {
+async function fetchJamSessions() {
   loading.value = true
   error.value = ''
   try {
-    await store.fetchBands()
+    await store.fetchJamSessions()
     if (isAdmin.value) {
-      bands.value = store.bands
+      jamSessions.value = store.jamSessions
       // Also fetch support conversations
       try {
         const { data } = await supportApi.list()
@@ -202,7 +202,7 @@ async function fetchBands() {
         // non-critical, ignore
       }
     } else {
-      bands.value = store.bands.filter((b) => b.conversation_id)
+      jamSessions.value = store.jamSessions.filter((js) => js.conversation_id)
 
       // Fetch user's own support conversations
       try {
@@ -212,8 +212,8 @@ async function fetchBands() {
         // non-critical
       }
 
-      if (bands.value.length === 0 && !radarShownOnce.value) {
-        radarMessage.value = 'Mencari ulang band yang cocok untukmu'
+      if (jamSessions.value.length === 0 && !radarShownOnce.value) {
+        radarMessage.value = 'Mencari ulang jam session yang cocok untukmu'
         showRadar.value = true
         radarShownOnce.value = true
         return
@@ -228,7 +228,7 @@ async function fetchBands() {
 
 async function onRadarDone() {
   showRadar.value = false
-  await fetchBands()
+  await fetchJamSessions()
 }
 
 function statusLabel(status) {
@@ -251,12 +251,12 @@ function statusStyle(status) {
   return colors[status] || ''
 }
 
-function openChat(band) {
-  router.push(`/chats/${band.id}`)
+function openChat(jamSession) {
+  router.push(`/chats/${jamSession.id}`)
 }
 
-function openAdminChat(band, conv) {
-  router.push(`/chats/${band.id}/${conv.id}`)
+function openAdminChat(jamSession, conv) {
+  router.push(`/chats/${jamSession.id}/${conv.id}`)
 }
 
 function topicLabel(topic) {

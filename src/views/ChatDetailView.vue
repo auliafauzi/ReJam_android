@@ -6,7 +6,7 @@
         <i class="ti ti-arrow-left"></i>
       </button>
       <div class="mini-logo"><i class="ti ti-music"></i></div>
-      <span class="mini-brand">{{ conversation?.band_nama || 'Chat' }}</span>
+      <span class="mini-brand">{{ conversation?.jam_session_nama || 'Chat' }}</span>
       <span v-if="isAdmin && conversation?.user_nama" style="color:var(--text-dim); font-size:11px; margin-left:4px;">
         → {{ conversation.user_nama }}
       </span>
@@ -38,7 +38,7 @@
       <div v-for="msg in conversation?.messages" :key="msg.id" class="msg-row" :class="{ mine: isMine(msg) }">
         <div class="msg-bubble">
           <div v-if="!isMine(msg)" style="font-size:10px; color: var(--text-dim); margin-bottom:3px;">
-            {{ msg.from_band ? conversation.band_nama : msg.sender_nama }}
+            {{ msg.from_session_manager ? conversation.jam_session_nama : msg.sender_nama }}
           </div>
           {{ msg.text }}
           <div class="msg-time">{{ formatTime(msg.created_at) }}</div>
@@ -59,7 +59,7 @@
           <i class="ti ti-message-2"></i> Tertarik, tapi saya ingin discuss mengenai songlist/jadwal latihan.
         </button>
         <button class="btn-ghost" style="font-size:14px; text-align:center; white-space:normal; line-height:1.4;" :disabled="responding" @click="respond('declined')">
-          Sorry, sepertinya saya kurang cocok untuk band ini.
+          Sorry, sepertinya saya kurang cocok untuk jam session ini.
         </button>
       </div>
     </div>
@@ -93,13 +93,13 @@
 import { computed, nextTick, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { useBandsStore } from '../stores/bands'
+import { useJamSessionsStore } from '../stores/jamSessions'
 import { messagingApi } from '../api/messaging'
 import BottomNav from '../components/BottomNav.vue'
 
 const route = useRoute()
 const auth = useAuthStore()
-const store = useBandsStore()
+const store = useJamSessionsStore()
 
 const loading = ref(true)
 const sending = ref(false)
@@ -111,12 +111,12 @@ const scrollEl = ref(null)
 const conversation = computed(() => store.conversation)
 const isAdmin = computed(() => auth.user?.is_superuser)
 
-const bandId = route.params.bandId
+const jamSessionId = route.params.jamSessionId
 const convId = route.params.convId  // only set for admin route
 
 onMounted(async () => {
   try {
-    await store.fetchConversation(bandId, isAdmin.value ? convId : null)
+    await store.fetchConversation(jamSessionId, isAdmin.value ? convId : null)
     await scrollToBottom()
   } catch {
     error.value = store.error || 'Gagal memuat percakapan.'
@@ -126,8 +126,8 @@ onMounted(async () => {
 })
 
 function isMine(msg) {
-  if (isAdmin.value) return msg.from_band
-  return !msg.from_band && msg.sender_id === auth.user?.id
+  if (isAdmin.value) return msg.from_session_manager
+  return !msg.from_session_manager && msg.sender_id === auth.user?.id
 }
 
 function formatTime(iso) {
@@ -182,9 +182,9 @@ const statusBannerStyle = computed(() => {
 
 const statusBannerText = computed(() => {
   const texts = {
-    accepted: '✅ Kamu sudah menyatakan tertarik pada band ini.',
+    accepted: '✅ Kamu sudah menyatakan tertarik pada jam session ini.',
     declined: '❌ Kamu sudah menolak undangan ini.',
-    negotiating: '🔄 Kamu sedang mendiskusikan detail dengan band ini.',
+    negotiating: '🔄 Kamu sedang mendiskusikan detail dengan jam session ini.',
   }
   return texts[conversation.value?.status] || ''
 })

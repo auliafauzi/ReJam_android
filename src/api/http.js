@@ -14,7 +14,7 @@ const http = axios.create({
 
 // Attach the auth token (DRF TokenAuthentication) to every request if present.
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem('bandjam_token')
+  const token = localStorage.getItem('rejam_token')
   if (token) {
     config.headers.Authorization = `Token ${token}`
     // config.headers.Authorization = `Token 3FAIJ9WuDuIlvEHWWIQhHMiRvT5_2ArsTUy6PJCWMGsWihBSH` //authtoken ngrok
@@ -27,8 +27,8 @@ http.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem('bandjam_token')
-      localStorage.removeItem('bandjam_user')
+      localStorage.removeItem('rejam_token')
+      localStorage.removeItem('rejam_user')
     }
     return Promise.reject(error)
   }

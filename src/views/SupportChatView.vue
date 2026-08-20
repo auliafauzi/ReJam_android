@@ -101,7 +101,7 @@ const OPENING_MESSAGES = {
   investor: 'Hai, saya tertarik untuk menjadi investor di Re:Jam',
   donate: 'Hai, saya tertarik untuk berdonasi',
   join_team: 'Hai, saya tertarik untuk bekerja bersama tim Re:Jam, apakah kalian sedang open for opportunity',
-  add_studio: 'Hai, saya ingin mendaftarkan studio band di database Re:Jam',
+  add_studio: 'Hai, saya ingin mendaftarkan studio jam session di database Re:Jam',
   additional_player: 'Hai, saya tertarik untuk menjadi additional player',
 }
 

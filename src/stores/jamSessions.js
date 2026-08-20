@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { bandsApi } from '../api/bands'
+import { jamSessionsApi } from '../api/jamSessions'
 import { messagingApi } from '../api/messaging'
 import { extractError } from './auth'
 
-export const useBandsStore = defineStore('bands', {
+export const useJamSessionsStore = defineStore('jamSessions', {
   state: () => ({
-    bands: [],
+    jamSessions: [],
     loading: false,
     error: null,
     // Current conversation being viewed
@@ -15,17 +15,17 @@ export const useBandsStore = defineStore('bands', {
 
   getters: {
     totalUnread: (state) =>
-      state.bands.reduce((sum, b) => sum + (b.unread_count || 0), 0),
+      state.jamSessions.reduce((sum, js) => sum + (js.unread_count || 0), 0),
   },
 
   actions: {
-    async fetchBands() {
+    async fetchJamSessions() {
       this.loading = true
       this.error = null
       try {
-        const { data } = await bandsApi.list()
+        const { data } = await jamSessionsApi.list()
         // Paginated (DRF PageNumberPagination) or plain array depending on view
-        this.bands = data.results ?? data
+        this.jamSessions = data.results ?? data
       } catch (err) {
         this.error = extractError(err)
         throw err
@@ -34,25 +34,24 @@ export const useBandsStore = defineStore('bands', {
       }
     },
 
-    async createBand(payload) {
-      // console.log("sampai createBand di stores js");
-      const { data } = await bandsApi.create(payload)
-      this.bands.unshift(data)
+    async createJamSession(payload) {
+      const { data } = await jamSessionsApi.create(payload)
+      this.jamSessions.unshift(data)
       return data
     },
 
     async forceMatch(payload) {
       console.log("sampai forceMatch di stores js")
-      const { data } = await bandsApi.forceMatch(bandId, payload)
-      this.bands.unshift(data)
+      const { data } = await jamSessionsApi.forceMatch(jamSessionId, payload)
+      this.jamSessions.unshift(data)
       return data
     },
 
-    async fetchConversation(bandId, convId = null) {
+    async fetchConversation(jamSessionId, convId = null) {
       this.messagesLoading = true
       this.error = null
       try {
-        const { data } = await bandsApi.conversation(bandId, convId)
+        const { data } = await jamSessionsApi.conversation(jamSessionId, convId)
         this.conversation = data
         return data
       } catch (err) {
@@ -95,8 +94,8 @@ export const useBandsStore = defineStore('bands', {
       }
     },
 
-    async inviteUser(bandId, payload) {
-      const { data } = await bandsApi.invite(bandId, payload)
+    async inviteUser(jamSessionId, payload) {
+      const { data } = await jamSessionsApi.invite(jamSessionId, payload)
       return data
     },
   },

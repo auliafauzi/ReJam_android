@@ -3,7 +3,7 @@
     <div class="welcome-body">
       <div class="welcome-icon"><i class="ti ti-music"></i></div>
       <h2>Selamat datang di Re:Jam!</h2>
-      <p>Profil musisimu sudah siap. Yuk, mulai cari teman jamming dan band yang cocok denganmu.</p>
+      <p>Profil musisimu sudah siap. Yuk, mulai cari teman jamming dan jam session yang cocok denganmu.</p>
       <div class="checklist">
         <div class="check-item"><i class="ti ti-check"></i><span>Akun berhasil dibuat</span></div>
         <div class="check-item"><i class="ti ti-check"></i><span>Profil musisi lengkap</span></div>
@@ -19,5 +19,5 @@
 
 <script setup>
 // Final onboarding step — user.onboarding_complete is already true at this
-// point (set by step 6), so the router will allow access to /bands.
+// point (set by step 6), so the router will allow access to /jam-sessions.
 </script>

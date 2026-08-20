@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { authApi } from '../api/auth'
 import { usePopupStore } from './popup'
 
-const TOKEN_KEY = 'bandjam_token'
-const USER_KEY = 'bandjam_user'
+const TOKEN_KEY = 'rejam_token'
+const USER_KEY = 'rejam_user'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -54,7 +54,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         const { data } = await authApi.login(payload)
         this._persist(data.token, data.user)
-        localStorage.removeItem('bandjam_matchmaking_shown')
+        localStorage.removeItem('rejam_matchmaking_shown')
         usePopupStore().fetchActive()
         return data.user
       } catch (err) {
@@ -81,8 +81,8 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       localStorage.removeItem(TOKEN_KEY)
       localStorage.removeItem(USER_KEY)
-      localStorage.removeItem('bandjam_matchmaking_shown')
-      localStorage.removeItem('bandjam_quiz1')
+      localStorage.removeItem('rejam_matchmaking_shown')
+      localStorage.removeItem('rejam_quiz1')
     },
 
     // ── Onboarding step actions — each updates and persists the user ──
@@ -102,8 +102,8 @@ export const useAuthStore = defineStore('auth', {
       this.error = null
       try {
         const { data } = await authApi.onboardingStep3(payload)
-        localStorage.removeItem('bandjam_quiz1')  // clear any old value first
-        localStorage.setItem('bandjam_quiz1', payload.answer)
+        localStorage.removeItem('rejam_quiz1')  // clear any old value first
+        localStorage.setItem('rejam_quiz1', payload.answer)
         this.setUser(data)
         return data
       } catch (err) {
@@ -115,12 +115,12 @@ export const useAuthStore = defineStore('auth', {
     async submitStep4(payload) {
       this.error = null
       try {
-        const quiz1 = localStorage.getItem('bandjam_quiz1')
+        const quiz1 = localStorage.getItem('rejam_quiz1')
         const { data } = await authApi.onboardingStep4({
           quiz1: quiz1,
           quiz2: payload.answer,
         })
-        localStorage.removeItem('bandjam_quiz1')
+        localStorage.removeItem('rejam_quiz1')
         this.setUser(data)
         return data
       } catch (err) {

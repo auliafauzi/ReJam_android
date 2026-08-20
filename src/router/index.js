@@ -9,7 +9,7 @@ import SkillQuizView from '../views/onboarding/SkillQuizView.vue'
 import LocationView from '../views/onboarding/LocationView.vue'
 import StageNameView from '../views/onboarding/StageNameView.vue'
 import WelcomeView from '../views/onboarding/WelcomeView.vue'
-import BandsView from '../views/BandsView.vue'
+import JamSessionsView from '../views/JamSessionsView.vue'
 import ChatsView from '../views/ChatsView.vue'
 import ChatDetailView from '../views/ChatDetailView.vue'
 import SupportView from '../views/SupportView.vue'
@@ -17,7 +17,7 @@ import ProfileView from '../views/ProfileView.vue'
 import RehearsalView from '../views/onboarding/RehearsalView.vue'
 import SupportChatView from '../views/SupportChatView.vue'
 import SupportAdminChatView from '../views/SupportAdminChatView.vue'
-import CreateBandView from '../views/CreateBandView.vue'
+import CreateJamSessionView from '../views/CreateJamSessionView.vue'
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -34,18 +34,18 @@ const routes = [
   { path: '/onboarding/rehearsal', name: 'onboarding-rehearsal', component: RehearsalView, meta: { requiresAuth: true } },
 
   // Main app (requires completed onboarding)
-  { path: '/bands', name: 'bands', component: BandsView, meta: { requiresAuth: true, requiresOnboarding: true } },
+  { path: '/jam-sessions', name: 'jam-sessions', component: JamSessionsView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/chats', name: 'chats', component: ChatsView, meta: { requiresAuth: true, requiresOnboarding: true } },
-  { path: '/chats/:bandId', name: 'chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
+  { path: '/chats/:jamSessionId', name: 'chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/support', name: 'support', component: SupportView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/profile', name: 'profile', component: ProfileView, meta: { requiresAuth: true, requiresOnboarding: true } },
 
   //Chat view for superadmin
-  { path: '/chats/:bandId/:convId', name: 'admin-chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
+  { path: '/chats/:jamSessionId/:convId', name: 'admin-chat-detail', component: ChatDetailView, meta: { requiresAuth: true, requiresOnboarding: true } },
   //For Support chat
   { path: '/support/:topic', name: 'support-chat', component: SupportChatView, meta: { requiresAuth: true, requiresOnboarding: true } },
   { path: '/support-admin/:convId', name: 'support-admin-chat', component: SupportAdminChatView, meta: { requiresAuth: true, requiresOnboarding: true } },
-  { path: '/bands/create', name: 'create-band', component: CreateBandView, meta: { requiresAuth: true, requiresOnboarding: true }},
+  { path: '/jam-sessions/create', name: 'create-jam-session', component: CreateJamSessionView, meta: { requiresAuth: true, requiresOnboarding: true }},
 ]
 
 const router = createRouter({

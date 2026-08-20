@@ -4,16 +4,16 @@
       <button class="btn-ghost" style="padding:8px 10px; border:none;" @click="$router.back()">
         <i class="ti ti-arrow-left"></i>
       </button>
-      <!-- <span class="header-title">Buat Band Baru</span> -->
-      <h2 class ="screen-title" style= "font-size:18px">Buat Band Baru</h2>
+      <!-- <span class="header-title">Buat Jam Session Baru</span> -->
+      <h2 class ="screen-title" style= "font-size:18px">Buat Jam Session Baru</h2>
     </div>
 
     <div class="scroll-body" style="padding: 20px;">
-      <form @submit.prevent="submitBand" class="band-form">
+      <form @submit.prevent="submitJamSession" class="jam-session-form">
         
         <div class="form-group">
-          <label>Nama Band</label>
-          <input v-model="form.nama" type="text" required placeholder="Masukkan nama band">
+          <label>Nama Jam Session</label>
+          <input v-model="form.nama" type="text" required placeholder="Masukkan nama jam session">
         </div>
 
         <div class="form-group">
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-          <label>Pilih Instrumen Anda di Band Ini</label>
+          <label>Pilih Instrumen Anda di Jam Session Ini</label>
           <div class="picker-group">
             <button 
               v-for="inst in availableInstruments" :key="inst"
@@ -52,7 +52,7 @@
         </div>
 
         <div class="form-group">
-          <label>Songlist Awal <p style="font-size: 11px">(songlist dapat berubah seiring keberjalanan band)</p></label>
+          <label>Songlist Awal <p style="font-size: 11px">(songlist dapat berubah seiring keberjalanan jam session)</p></label>
           <textarea 
             v-model="form.songlist_awal" 
             rows="5" 
@@ -67,7 +67,7 @@ Sheila On 7 - Kita"
         </div>
 
         <button type="submit" class="btn-primary" :disabled="loading" style="width: 100%; margin-top: 20px;">
-          {{ loading ? 'Memproses...' : 'Simpan Band' }}
+          {{ loading ? 'Memproses...' : 'Simpan Jam Session' }}
         </button>
       </form>
     </div>
@@ -78,13 +78,13 @@ Sheila On 7 - Kita"
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
-import { useBandsStore } from '../stores/bands'
+import { useJamSessionsStore } from '../stores/jamSessions'
 import { optionsApi } from '../api/options'
-import { bandsApi } from '../api/bands'
+import { jamSessionsApi } from '../api/jamSessions'
 
 const router = useRouter()
 const auth = useAuthStore()
-const store = useBandsStore()
+const store = useJamSessionsStore()
 
 const loading = ref(false)
 const errorMessage = ref('')
@@ -125,7 +125,7 @@ function toggleGenre(genre) {
   }
 }
 
-async function submitBand() {
+async function submitJamSession() {
   loading.value = true
   errorMessage.value = ''
   
@@ -142,16 +142,16 @@ async function submitBand() {
       songlist: processedSonglist,
       level: auth.user.level // Diambil otomatis dari store user
     }
-    const createBandSuccess = await store.createBand(payload)
-    // const {data} = await bandsApi.forceMatch(createBandSuccess.id, payload)
+    const createJamSessionSuccess = await store.createJamSession(payload)
+    // const {data} = await jamSessionsApi.forceMatch(createJamSessionSuccess.id, payload)
 
-    // router.push('/bands')
+    // router.push('/jam-sessions')
     // const forceMatch = await store.forceMatch("test_id", "test_payload")
   } catch (err) {
-    errorMessage.value = err.response?.data?.detail || 'Gagal membuat band.'
+    errorMessage.value = err.response?.data?.detail || 'Gagal membuat jam session.'
   } finally {
     loading.value = false
-    router.push('/bands')
+    router.push('/jam-sessions')
   }
 }
 </script>

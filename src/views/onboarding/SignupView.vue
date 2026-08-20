@@ -87,14 +87,14 @@
               <h3>2. Informasi yang Kami Kumpulkan</h3>
               <p>Kami mengumpulkan data pribadi yang Anda berikan secara sukarela untuk fungsionalitas platform, meliputi:</p>
               <p>• <strong>Data Identitas Akun:</strong> Nama pengguna (username), alamat email, dan kata sandi.</p>
-              <p>• <strong>Data Profil Musik & Band:</strong> Informasi instrumen yang dikuasai, genre musik yang diminati, serta informasi terkait grup band yang Anda kelola atau ikuti.</p>
+              <p>• <strong>Data Profil Musik & Jam Session:</strong> Informasi instrumen yang dikuasai, genre musik yang diminati, serta informasi terkait jam session yang Anda kelola atau ikuti.</p>
               <p>• <strong>Data Komunikasi:</strong> Isi pesan teks dan riwayat obrolan (conversations) yang Anda kirimkan antar-pengguna melalui fitur pesan internal reJam.</p>
               <p>• <strong>Data Lokasi:</strong> Lokasi yang diberikan oleh pengguna baik secara langsung maupun dengan penggunaan sistem.</p>
               
               <h3>3. Bagaimana Kami Menggunakan Data Pribadi Anda</h3>
               <p>Sesuai dengan asas legalitas undang-undang yang berlaku, kami memproses data Anda hanya untuk tujuan:</p>
               <p>• Menyediakan, mengoperasikan, dan memelihara fitur utama platform reJam.</p>
-              <p>• Menghubungkan antar-musisi atau band berdasarkan kesamaan instrumen dan preferensi musik.</p>
+              <p>• Menghubungkan antar-musisi atau jam session berdasarkan kesamaan instrumen dan preferensi musik.</p>
               <p>• Memfasilitasi sistem pengiriman pesan internal yang aman.</p>
               <p>• Mengirimkan notifikasi teknis, pembaruan sistem keamanan, dan pesan administratif.</p>
               
@@ -119,14 +119,14 @@
               <h3>2. Information We Collect</h3>
               <p>We collect personal data that you voluntarily provide for platform functionality, including:</p>
               <p>• <strong>Account Identity Data:</strong> Username, email address, and password.</p>
-              <p>• <strong>Music & Band Profile Data:</strong> Information about instruments you master, musical genres you're interested in, and information about bands you manage or participate in.</p>
+              <p>• <strong>Music & Jam Session Profile Data:</strong> Information about instruments you master, musical genres you're interested in, and information about jam sessions you manage or participate in.</p>
               <p>• <strong>Communication Data:</strong> The content of text messages and chat history you send between users via reJam's internal messaging feature.</p>
               <p>• <strong>Location Data:</strong> Locations provided by users, either given directly or through system usage.</p>
               
               <h3>3. How We Use Your Personal Data</h3>
               <p>In accordance with the legal principles of applicable laws, we process your data only for the following purposes:</p>
               <p>• Provide, operate, and maintain the core features of the reJam platform.</p>
-              <p>• Connect musicians or bands based on shared instruments and musical preferences.</p>
+              <p>• Connect musicians or jam sessions based on shared instruments and musical preferences.</p>
               <p>• Facilitate a secure internal messaging system.</p>
               <p>• Send technical notifications, security updates, and administrative messages.</p>
               
